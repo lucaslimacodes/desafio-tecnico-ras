@@ -26,8 +26,8 @@ public class TabelaTarifaria {
     private LocalDateTime dataCriacao;
 
     @Column
-    private boolean vigente;
+    private Boolean vigente;
 
-    @OneToMany(mappedBy = "tabelaTarifaria", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "tabelaTarifaria", cascade = CascadeType.ALL)
     private List<TabelaTarifariaCategoria> tarifas = new ArrayList<>();
 }

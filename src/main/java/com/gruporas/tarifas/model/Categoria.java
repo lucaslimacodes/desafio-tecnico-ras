@@ -2,6 +2,7 @@ package com.gruporas.tarifas.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Categoria {
 
     @Id
@@ -25,6 +27,6 @@ public class Categoria {
     @Column
     private String descricao;
 
-    @OneToMany(mappedBy = "categoria",  cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "categoria",  cascade = CascadeType.ALL)
     private List<TabelaTarifariaCategoria> tarifas = new ArrayList<>();
 }
