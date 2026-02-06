@@ -3,6 +3,8 @@ package com.gruporas.tarifas.service;
 import com.gruporas.tarifas.dto.CategoriaDTO;
 import com.gruporas.tarifas.dto.FaixaConsumoDTO;
 import com.gruporas.tarifas.dto.TabelaTarifariaDTO;
+import com.gruporas.tarifas.dto.TabelaTarifariaResponseDTO;
+import com.gruporas.tarifas.exception.TabelaTarifariaNotFoundException;
 import com.gruporas.tarifas.model.Categoria;
 import com.gruporas.tarifas.model.FaixaConsumo;
 import com.gruporas.tarifas.model.TabelaTarifaria;
@@ -11,11 +13,13 @@ import com.gruporas.tarifas.model.embeddable.TabelaTarifariaCategoriaId;
 import com.gruporas.tarifas.repository.CategoriaRepository;
 import com.gruporas.tarifas.repository.TabelaTarifariaRepository;
 import com.gruporas.tarifas.utils.TabelaTarifariaValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TabelaTarifariaService {
@@ -25,6 +29,27 @@ public class TabelaTarifariaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    public List<TabelaTarifaria> getAllTabelaTarifaria() {
+        return tabelaTarifariaRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteTabelaTarifariaById(Long id) {
+
+        TabelaTarifaria tabelaTarifaria = tabelaTarifariaRepository.findById(id)
+                .orElseThrow(() -> new TabelaTarifariaNotFoundException(id));
+
+        tabelaTarifariaRepository.delete(tabelaTarifaria);
+        tabelaTarifariaRepository.flush();
+
+        // se deletou a tabela vigente
+        if(tabelaTarifaria.getVigente()){
+            // a tabela mais recente volta a ser a vigente
+            Optional<TabelaTarifaria> tabelaMaisRecente = tabelaTarifariaRepository.findFirstByOrderByDataCriacaoDesc();
+            tabelaMaisRecente.ifPresent(tabela -> tabela.setVigente(true));
+        }
+    }
 
     public TabelaTarifaria createTabelaTarifaria(TabelaTarifariaDTO dto) {
         List<Categoria> categorias = categoriaRepository.findAll();

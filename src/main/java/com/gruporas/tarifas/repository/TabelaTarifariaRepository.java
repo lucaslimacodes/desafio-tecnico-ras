@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TabelaTarifariaRepository extends JpaRepository<TabelaTarifaria, Long> {
 
@@ -14,4 +16,6 @@ public interface TabelaTarifariaRepository extends JpaRepository<TabelaTarifaria
     @Transactional
     @Query("UPDATE TabelaTarifaria t SET t.vigente = false")
     void revogarTabelasTarifarias();
+
+    Optional<TabelaTarifaria> findFirstByOrderByDataCriacaoDesc();
 }
