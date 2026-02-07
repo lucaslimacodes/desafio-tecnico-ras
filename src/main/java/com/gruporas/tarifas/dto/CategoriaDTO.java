@@ -5,6 +5,7 @@ import com.gruporas.tarifas.model.FaixaConsumo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoriaDTO {
 
-    @NotEmpty
+    @NotEmpty(message = "Nome não pode ser vazio")
     private String nome;
 
-    @NotNull
+    @NotNull(message = "a lista de faixas não pode ser nula")
     @Valid
     private List<FaixaConsumoDTO> faixas;
 
