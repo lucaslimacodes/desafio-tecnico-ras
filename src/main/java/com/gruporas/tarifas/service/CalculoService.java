@@ -50,6 +50,7 @@ public class CalculoService {
             if(consumoRestante == 0) break; // não há mais consumo para ser computado
 
             Integer deltaFaixa = faixaConsumo.getFim() - faixaConsumo.getInicio();
+            if(faixaConsumo.getInicio() > 0) deltaFaixa++; // corrigindo bug da segunda faixa em diante ter -1 de consumo
 
             FaixaInicioFimDTO faixaInicioFimDTO = new FaixaInicioFimDTO(faixaConsumo);
             CobrancaFaixaDTO cobrancaFaixaDTO = new CobrancaFaixaDTO();
