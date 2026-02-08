@@ -1,8 +1,10 @@
 package com.gruporas.tarifas.controller;
 
+import com.gruporas.tarifas.dto.FaixaConsumoDTO;
 import com.gruporas.tarifas.dto.TabelaTarifariaDTO;
 import com.gruporas.tarifas.dto.TabelaTarifariaResponseDTO;
 import com.gruporas.tarifas.infra.ErroDTO;
+import com.gruporas.tarifas.model.FaixaConsumo;
 import com.gruporas.tarifas.model.TabelaTarifaria;
 import com.gruporas.tarifas.service.TabelaTarifariaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,5 +76,22 @@ public class TabelaTarifariaController {
     private ResponseEntity<Void> deleteTabelaTarifaria(@PathVariable Long id) {
         tabelaTarifariaService.deleteTabelaTarifariaById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(description = "retorna a lista de faixas de uma categoria da tabela vigente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de faixas retornada com sucesso"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Categoria inválida ou não existe tabela vigente no sistema",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErroDTO.class))
+            )
+    })
+    @GetMapping("/faixas/{categoria}")
+    private ResponseEntity<List<FaixaConsumoDTO>> getFaixasByCategoria(@PathVariable String categoria) {
+        List<FaixaConsumo> faixas = tabelaTarifariaService.getFaixasByCategoria(categoria);
+        return ResponseEntity.ok(faixas.stream().map(FaixaConsumoDTO::new).toList());
     }
 }

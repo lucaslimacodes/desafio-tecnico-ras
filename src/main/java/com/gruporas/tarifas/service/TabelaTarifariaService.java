@@ -4,6 +4,7 @@ import com.gruporas.tarifas.dto.CategoriaDTO;
 import com.gruporas.tarifas.dto.FaixaConsumoDTO;
 import com.gruporas.tarifas.dto.TabelaTarifariaDTO;
 import com.gruporas.tarifas.dto.TabelaTarifariaResponseDTO;
+import com.gruporas.tarifas.exception.CategoriaInvalidaException;
 import com.gruporas.tarifas.exception.TabelaTarifariaNotFoundException;
 import com.gruporas.tarifas.model.Categoria;
 import com.gruporas.tarifas.model.FaixaConsumo;
@@ -11,6 +12,7 @@ import com.gruporas.tarifas.model.TabelaTarifaria;
 import com.gruporas.tarifas.model.TabelaTarifariaCategoria;
 import com.gruporas.tarifas.model.embeddable.TabelaTarifariaCategoriaId;
 import com.gruporas.tarifas.repository.CategoriaRepository;
+import com.gruporas.tarifas.repository.FaixaConsumoRepository;
 import com.gruporas.tarifas.repository.TabelaTarifariaRepository;
 import com.gruporas.tarifas.utils.TabelaTarifariaValidator;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +32,9 @@ public class TabelaTarifariaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private FaixaConsumoRepository faixaConsumoRepository;
 
     public List<TabelaTarifaria> getAllTabelaTarifaria() {
         return tabelaTarifariaRepository.findAll();
@@ -89,6 +95,14 @@ public class TabelaTarifariaService {
         }
 
         return tabelaTarifariaRepository.save(tabela);
+    }
+
+    public List<FaixaConsumo> getFaixasByCategoria(String categoria) {
+        List<FaixaConsumo> faixas = faixaConsumoRepository.findAllByNomeCategoriaAndTabelaVigente(categoria);
+        if(faixas.isEmpty()){
+            throw new CategoriaInvalidaException("Categoria inválida ou ainda não existe tabela tarifária no banco");
+        }
+        return faixas;
     }
 
 }
