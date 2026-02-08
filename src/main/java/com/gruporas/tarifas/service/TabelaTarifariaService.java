@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public class TabelaTarifariaService {
         TabelaTarifaria tabela = new TabelaTarifaria();
         tabela.setNome(dto.getNome());
         tabela.setVigente(true);
-        tabela.setDataCriacao(LocalDateTime.now());
+        tabela.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 
         for (CategoriaDTO categoriaDTO : dto.getCategorias()) {
             Categoria categoria = categorias.stream()
