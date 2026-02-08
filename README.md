@@ -2,14 +2,14 @@
 
 Este repositório contém a aplicação desenvolvida durante o desafio técnico do processo seletivo de Desenvolvedor de Sistemas Jr.
 
-O desafio propõe a criação de uma API utilizando Spring Boot com Java 21 + PostgreSQL de criação e gerência de tabelas tarifárias.
+O desafio propõe a criação de uma API utilizando Spring Boot + PostgreSQL de criação e gerência de tabelas tarifárias.
 
 ---
 
 ## Modelagem de Domínio
 Segue o [Modelo Entidade Relacionamento](https://pt.wikipedia.org/wiki/Modelo_entidade_relacionamento) proposto para essa atividade
 
-![Modelo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrPYwxUp3JKC6jOxAZeioI-VF4o_Chj9yF2A&s)
+![Modelo](./src/main/resources/static/modelagem_banco.png)
 
 - **Tabela Tarifária**: Entidade central da aplicação, a tabela armazenará dados básicos da tabela tarifária, como nome, data de criação, e vigência.
   Para o atributo `vigencia` especificamente, ele foi adicionado para registrar qual a tabela ativa no momento, pois a aplicação permite a criação de múltiplas tabelas tarifárias, e a ativa é sempre a última cadastrada.
@@ -21,7 +21,7 @@ Segue o [Modelo Entidade Relacionamento](https://pt.wikipedia.org/wiki/Modelo_en
 ##  Arquitetura do Sistema
 Segue um diagrama básico da arquitetura da aplicação
 
-![Arquitetura do Sistema](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrPYwxUp3JKC6jOxAZeioI-VF4o_Chj9yF2A&s)
+![Arquitetura do Sistema](./src/main/resources/static/arquitetura.png)
 
 - **Controllers**: Camada que recebe a requisição HTTP, responsável por chamar a camada de serviço e retornar o JSON adequado.
 - **Services**: Camada responsável pelas regras de negócio da aplicação, podendo chamar a camada de persistência para interagir com o banco
