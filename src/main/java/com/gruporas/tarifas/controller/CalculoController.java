@@ -2,8 +2,11 @@ package com.gruporas.tarifas.controller;
 
 import com.gruporas.tarifas.dto.CalculoRequestDTO;
 import com.gruporas.tarifas.dto.CalculoResponseDTO;
+import com.gruporas.tarifas.infra.ErroDTO;
 import com.gruporas.tarifas.service.CalculoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,9 +31,21 @@ public class CalculoController {
 
     @Operation(description = "Realiza cálculo de consumo")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "tabela tarifaria criada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Categoria inválida"),
-            @ApiResponse(responseCode = "404", description = "Ainda não existe tabela tarifária no sistema.")
+            @ApiResponse(responseCode = "200", description = "Cálculo realizado com sucesso"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Categoria inválida",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErroDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ainda não existe tabela tarifária no sistema.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErroDTO.class))
+            )
     })
     @PostMapping
     private ResponseEntity<CalculoResponseDTO> calculateTaxa(@RequestBody @Valid CalculoRequestDTO dto){

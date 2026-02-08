@@ -4,3 +4,4 @@ values
     (2,'INDUSTRIAL','Indústrias e fábricas'),
     (3,'PARTICULAR','Residências'),
     (4,'PUBLICO','Órgãos públicos')
+ON CONFLICT (id) DO NOTHING;
