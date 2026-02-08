@@ -36,7 +36,7 @@ public class TabelaTarifariaValidator {
         List<Categoria> categoriaAux = new ArrayList<>(categorias);
         for(CategoriaDTO categoriaDTO : dto.getCategorias()) {
             Categoria categoria = categoriaAux.stream()
-                    .filter(cat -> cat.getNome().equals(categoriaDTO.getNome())).findFirst().orElse(null);
+                    .filter(cat -> cat.getNome().equals(categoriaDTO.getNome().toUpperCase())).findFirst().orElse(null);
             if(categoria == null) {
                 throw new CategoriaInvalidaException("A categoria " + categoriaDTO.getNome() + " não existe ou está duplicada");
             }

@@ -27,18 +27,18 @@ public class CalculoService {
     private FaixaConsumoRepository faixaConsumoRepository;
 
     public CalculoResponseDTO calcularConsumo(CalculoRequestDTO dto){
-        if(!categoriaRepository.existsByNome(dto.getCategoria())){
+        if(!categoriaRepository.existsByNome(dto.getCategoria().toUpperCase())){
             throw new CategoriaInvalidaException("A categoria " + dto.getCategoria() + " não existe.");
         }
 
         // obtendo as faixas da categoria em questão a partir da tabela vigente
-        List<FaixaConsumo> faixas = faixaConsumoRepository.findAllByNomeCategoriaAndTabelaVigente(dto.getCategoria());
+        List<FaixaConsumo> faixas = faixaConsumoRepository.findAllByNomeCategoriaAndTabelaVigente(dto.getCategoria().toUpperCase());
         if(faixas.isEmpty()){
             throw new TabelaTarifariaNotFoundException("Não existe tabela tarifária cadastrada no sistema.");
         }
 
         CalculoResponseDTO calculoResponseDTO = new CalculoResponseDTO();
-        calculoResponseDTO.setCategoria(dto.getCategoria());
+        calculoResponseDTO.setCategoria(dto.getCategoria().toUpperCase());
         calculoResponseDTO.setConsumoTotal(dto.getConsumo());
         calculoResponseDTO.setDetalhamento(new ArrayList<>());
 

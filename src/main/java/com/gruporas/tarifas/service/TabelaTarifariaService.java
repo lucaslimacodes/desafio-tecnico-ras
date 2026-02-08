@@ -72,7 +72,7 @@ public class TabelaTarifariaService {
 
         for (CategoriaDTO categoriaDTO : dto.getCategorias()) {
             Categoria categoria = categorias.stream()
-                    .filter(c -> c.getNome().equals(categoriaDTO.getNome()))
+                    .filter(c -> c.getNome().equals(categoriaDTO.getNome().toUpperCase()))
                     .findFirst()
                     .orElse(null);
 
@@ -98,7 +98,7 @@ public class TabelaTarifariaService {
     }
 
     public List<FaixaConsumo> getFaixasByCategoria(String categoria) {
-        List<FaixaConsumo> faixas = faixaConsumoRepository.findAllByNomeCategoriaAndTabelaVigente(categoria);
+        List<FaixaConsumo> faixas = faixaConsumoRepository.findAllByNomeCategoriaAndTabelaVigente(categoria.toUpperCase());
         if(faixas.isEmpty()){
             throw new CategoriaInvalidaException("Categoria inválida ou ainda não existe tabela tarifária no banco");
         }
